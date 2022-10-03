@@ -26,12 +26,7 @@ public class BaseballNumbers {
 
     public static List<Integer> generateOnString(String s) {
         validateLength(s);
-        List<Integer> parsedList;
-        try {
-            parsedList = StringParser.convertIntegerList(s);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException();
-        }
+        List<Integer> parsedList = parseToIntegerList(s);
         Set<Integer> numbers = new LinkedHashSet<>(parsedList);
         validateSize(numbers);
         validateNumbers(numbers);
@@ -43,6 +38,16 @@ public class BaseballNumbers {
         validateSize(numbers);
         validateNumbers(numbers);
         return new ArrayList<>(numbers);
+    }
+
+    private static List<Integer> parseToIntegerList(String  s){
+        List<Integer> parsedList;
+        try {
+            parsedList = StringParser.convertIntegerList(s);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException();
+        }
+        return parsedList;
     }
 
     private static void validateSize(Collection<Integer> numbers) {
