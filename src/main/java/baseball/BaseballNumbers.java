@@ -13,23 +13,18 @@ public class BaseballNumbers {
     private final static int BASEBALL_NUMBER_CAPACITY = 3;
     private final static int MINIMUM_NUMBER = 1;
     private final static int MAXIMUM_NUMBER = 9;
-    private final List<Integer> baseballNumbers;
 
-    private BaseballNumbers(Set<Integer> numbers) {
-        validateSize(numbers);
-        validateNumbers(numbers);
-        this.baseballNumbers = new ArrayList<>(numbers);
-    }
-
-    public static BaseballNumbers generateOnCapacity() {
+    public static List<Integer> generateOnCapacity() {
         Set<Integer> numbers = new LinkedHashSet<>();
         while (numbers.size() < BASEBALL_NUMBER_CAPACITY) {
             numbers.add(BaseballRandomNumberGenerator.generate());
         }
-        return new BaseballNumbers(numbers);
+        validateSize(numbers);
+        validateNumbers(numbers);
+        return new ArrayList<>(numbers);
     }
 
-    public static BaseballNumbers generateOnString(String s) {
+    public static List<Integer> generateOnString(String s) {
         validateLength(s);
         List<Integer> parsedList;
         try {
@@ -38,30 +33,39 @@ public class BaseballNumbers {
             throw new IllegalArgumentException();
         }
         Set<Integer> numbers = new LinkedHashSet<>(parsedList);
-        return new BaseballNumbers(numbers);
+        validateSize(numbers);
+        validateNumbers(numbers);
+        return new ArrayList<>(numbers);
     }
 
-    private static void validateLength(String s) {
-        if (s.length() != BASEBALL_NUMBER_CAPACITY) {
-            throw new IllegalArgumentException();
-        }
+    public static List<Integer> generateOnCollection(Collection<Integer> collection) {
+        Set<Integer> numbers = new LinkedHashSet<>(collection);
+        validateSize(numbers);
+        validateNumbers(numbers);
+        return new ArrayList<>(numbers);
     }
 
-    private void validateSize(Collection<Integer> numbers) {
+    private static void validateSize(Collection<Integer> numbers) {
         if (numbers.size() != BASEBALL_NUMBER_CAPACITY) {
             throw new IllegalArgumentException();
         }
     }
 
-    private void validateNumbers(Set<Integer> numbers) {
+    private static void validateNumbers(Set<Integer> numbers) {
         for (Integer num : numbers) {
             validRange(num);
         }
     }
 
-    private void validRange(Integer num) {
+    private static void validRange(Integer num) {
         if (num < MINIMUM_NUMBER
                 || num > MAXIMUM_NUMBER) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private static void validateLength(String s) {
+        if (s.length() != BASEBALL_NUMBER_CAPACITY) {
             throw new IllegalArgumentException();
         }
     }
